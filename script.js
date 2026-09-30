@@ -12,7 +12,6 @@ var API_KEY = window.OPENWEATHER_API_KEY || "YOUR_API_KEY";
 
 var CITY = "Bandung";
 var REQUEST_TIMEOUT_MS = 10000;
-var FALLBACK_ICON_TEXT = "\u2601"; // cloud symbol when the icon image fails
 
 /* ---------- DOM references ---------- */
 
@@ -24,6 +23,7 @@ var errorMessage = document.getElementById("error-message");
 var weatherCard = document.getElementById("weather-card");
 var cityName = document.getElementById("city-name");
 var weatherIcon = document.getElementById("weather-icon");
+var weatherIconFallback = document.getElementById("weather-icon-fallback");
 var temperatureValue = document.getElementById("temperature-value");
 var weatherDescription = document.getElementById("weather-description");
 var feelsLikeValue = document.getElementById("feels-like-value");
@@ -110,7 +110,8 @@ function renderWeather(data) {
   cityName.textContent = country ? city + ", " + country : city;
 
   // Temperature / feels like (units=metric -> Celsius)
-  temperatureValue.textContent = formatNumber(data.main && data.main.temp, "\u00B0C");
+  // The main temperature's °C unit lives in the HTML next to this span.
+  temperatureValue.textContent = formatNumber(data.main && data.main.temp);
   feelsLikeValue.textContent = formatNumber(data.main && data.main.feels_like, "\u00B0C");
 
   // Humidity (%) and wind (m/s)
@@ -129,13 +130,14 @@ function renderWeather(data) {
     data.weather && data.weather[0] && typeof data.weather[0].icon === "string"
       ? data.weather[0].icon
       : "";
-  weatherIcon.classList.remove("weather-card__icon--fallback");
   if (iconCode) {
+    weatherIconFallback.hidden = true;
+    weatherIcon.classList.remove("weather-card__icon--fallback");
+    weatherIcon.style.display = "";
     weatherIcon.src = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
     weatherIcon.alt = description ? description : "Weather icon";
-    weatherIcon.style.display = "";
   } else {
-    showIconFallback(description);
+    showIconFallback();
   }
 
   // Observation time in Bandung time (this is the API data timestamp, not fetch time)
@@ -151,18 +153,16 @@ function renderWeather(data) {
   weatherCard.hidden = false;
 }
 
-/** Replace the icon <img> with a text fallback when it cannot be displayed. */
-function showIconFallback(altText) {
+/** Hide the icon <img> and show a text fallback when it cannot be displayed. */
+function showIconFallback() {
   weatherIcon.removeAttribute("src");
-  weatherIcon.classList.add("weather-card__icon--fallback");
-  weatherIcon.style.display = "";
-  weatherIcon.alt = altText ? altText : "Weather icon unavailable";
-  weatherIcon.textContent = FALLBACK_ICON_TEXT;
+  weatherIcon.style.display = "none";
+  weatherIconFallback.hidden = false;
 }
 
 weatherIcon.addEventListener("error", function () {
   // Image failed to load (e.g. offline, blocked): degrade gracefully.
-  showIconFallback(weatherIcon.alt);
+  showIconFallback();
 });
 
 /* ---------- API request ---------- */

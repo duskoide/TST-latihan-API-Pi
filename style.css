@@ -224,12 +224,16 @@ button:focus-visible {
   flex: none;
 }
 
-/* Fallback look when the icon image fails to load */
-.weather-card__icon--fallback {
-  width: auto;
-  height: auto;
-  padding: 0.5rem 0.75rem;
-  font-size: 2rem;
+/* Fallback text shown when the icon image fails to load */
+.weather-card__icon-fallback {
+  font-size: 2.5rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  flex: none;
   background: var(--bg);
   border-radius: 10px;
 }
@@ -331,7 +335,8 @@ button:focus-visible {
     font-size: 2.75rem;
   }
 
-  .weather-card__icon {
+  .weather-card__icon,
+  .weather-card__icon-fallback {
     width: 80px;
     height: 80px;
   }
