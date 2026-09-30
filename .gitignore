@@ -1,0 +1,12 @@
+# Local API key configuration — never commit your real key
+config.js
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Assignment planning notes, not part of the app
+PLAN.md

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bandung Weather</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="page-header">
+      <h1>Bandung Weather</h1>
+      <button id="refresh-button" type="button" aria-describedby="status-region">
+        <span class="button-label">Refresh</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
+    </header>
+
+    <main>
+      <!-- Accessible status region: announces loading / success / error messages -->
+      <p id="status-region" role="status" aria-live="polite" class="status status--idle">
+        Loading weather data&hellip;
+      </p>
+
+      <!-- Error panel with retry action (hidden until an error occurs) -->
+      <section id="error-panel" class="error-panel" hidden aria-labelledby="error-title">
+        <h2 id="error-title" class="error-panel__title">Something went wrong</h2>
+        <p id="error-message" class="error-panel__message"></p>
+        <button id="retry-button" type="button" class="error-panel__retry">Try again</button>
+      </section>
+
+      <!-- Weather card (hidden until the first successful response) -->
+      <section id="weather-card" class="weather-card" hidden aria-labelledby="city-name">
+        <p class="weather-card__subtitle">Current conditions</p>
+
+        <h2 id="city-name" class="weather-card__city">Bandung, Indonesia</h2>
+
+        <div class="weather-card__main">
+          <img
+            id="weather-icon"
+            class="weather-card__icon"
+            src=""
+            alt=""
+            width="100"
+            height="100"
+          />
+          <p class="weather-card__temperature">
+            <span id="temperature-value">--</span><span class="weather-card__unit">&deg;C</span>
+          </p>
+        </div>
+        <p id="weather-description" class="weather-card__description">--</p>
+
+        <dl class="metrics-grid">
+          <div class="metric">
+            <dt class="metric__label">Feels like</dt>
+            <dd id="feels-like-value" class="metric__value">--</dd>
+          </div>
+          <div class="metric">
+            <dt class="metric__label">Humidity</dt>
+            <dd id="humidity-value" class="metric__value">--</dd>
+          </div>
+          <div class="metric">
+            <dt class="metric__label">Wind speed</dt>
+            <dd id="wind-value" class="metric__value">--</dd>
+          </div>
+        </dl>
+
+        <p class="weather-card__updated">
+          Weather updated: <time id="observation-time" datetime="">--</time>
+          <span class="weather-card__tz-note">(Bandung local time, from API data)</span>
+        </p>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>
+        Weather data provided by
+        <a href="https://openweathermap.org/" target="_blank" rel="noopener noreferrer">OpenWeather</a>
+      </p>
+    </footer>
+  </div>
+
+  <!-- Local API key configuration (see config.example.js / README.md) -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
